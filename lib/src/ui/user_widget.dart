@@ -102,11 +102,27 @@ class _UserWidgetState extends State<UserWidget>
                                     Container(
                                       width: double.infinity,
                                       height: 150,
-                                      color: Color(0xfff9f9f9),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFFf9f9f9),
+                                        borderRadius: BorderRadius.circular(3),
+                                      ),
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                              bottom: BorderSide(
+                                                  color: Color(0xFFe2e2e2),
+                                                  width: 1)),
+                                        ),
+                                      ),
                                     ),
                                     Container(
                                       height: 200,
-                                      color: Color(0xffffffff),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xffffffff),
+                                        borderRadius: BorderRadius.circular(3),
+                                      ),
                                     ),
                                   ],
                                 ),
