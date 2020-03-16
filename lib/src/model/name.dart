@@ -9,4 +9,8 @@ class Name {
       : title = json["title"],
         first = json["first"],
         last = json["last"];
+
+  toJsonString() {
+    return '{"title": "${title}", "first": "${first}", "last": "${last}"}';
+  }
 }

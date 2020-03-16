@@ -1,23 +1,14 @@
 import 'package:rxdart/rxdart.dart';
-import 'package:tinderapp/src/model/user.dart';
+import 'package:tinderapp/src/repository/user_repository.dart';
 
 class ListUserBloc {
   final BehaviorSubject<List> _listUser = BehaviorSubject<List>();
+  final UserRepository _repository = UserRepository();
 
   getUsers() {
-    List users = listUser.value;
-    return users;
-  }
-
-  addUser(User user) {
-    List users = getUsers();
-    if (users == null) {
-      users = [];
-    }
-    if(!users.contains(user)){
-      users.add(user);
-      listUserBloc.listUser.add(users);
-    }
+      _repository.getAllUser().then((users) {
+          listUser.sink.add(users);
+      }).catchError((onError) {});
   }
 
   dispose() {

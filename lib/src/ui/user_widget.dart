@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tinderapp/src/bloc/list_user_bloc.dart';
 import 'package:tinderapp/src/model/user_response.dart';
 import 'package:tinderapp/src/bloc/user_bloc.dart';
 import 'package:swipedetector/swipedetector.dart';
@@ -177,7 +176,7 @@ class _UserWidgetState extends State<UserWidget>
         userBloc.getUser();
       },
       onSwipeRight: () {
-        listUserBloc.addUser(user);
+        userBloc.addUser(user);
         userBloc.setUser(loading);
         userBloc.getUser();
       },

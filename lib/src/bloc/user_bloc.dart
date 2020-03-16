@@ -1,18 +1,26 @@
-
 import 'package:rxdart/rxdart.dart';
+import 'package:tinderapp/src/model/user.dart';
 import 'package:tinderapp/src/model/user_response.dart';
 import 'package:tinderapp/src/repository/user_repository.dart';
 
 class UserBloc {
   final UserRepository _repository = UserRepository();
   final BehaviorSubject<UserResponse> _subject =
-  BehaviorSubject<UserResponse>();
+      BehaviorSubject<UserResponse>();
+
 
   getUser() async {
     UserResponse response = await _repository.getUser();
     _subject.sink.add(response);
-    var currentValue = await _subject.first;
-    print(currentValue.results[0].phone);
+//    var currentValue = await _subject.first;
+//    print(currentValue.results[0].phone);
+  }
+
+  addUser(User people) {
+    _repository.createUser(people).then((people) {
+    }).catchError((e) {
+      print(e);
+    });
   }
 
   setUser(data) {

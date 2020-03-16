@@ -30,6 +30,8 @@ dev_dependencies:
   dio: ^3.0.8
   rxdart: ^0.23.1
   swipedetector: ^1.2.0
+  sqflite: any
+  path_provider: ^1.6.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

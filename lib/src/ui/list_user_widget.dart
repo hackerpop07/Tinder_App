@@ -13,6 +13,7 @@ class _ListUserWidgetState extends State<ListUserWidget> {
   @override
   void initState() {
     super.initState();
+    listUserBloc.getUsers();
   }
 
   @override
@@ -21,15 +22,31 @@ class _ListUserWidgetState extends State<ListUserWidget> {
       stream: listUserBloc.listUser.stream,
       builder: (context, AsyncSnapshot<List> snapshot) {
         if (snapshot.hasData) {
+          if (snapshot.data.isEmpty) {
+          return  _buildNotificationWidget();
+          }
           return _buildListUserWidget(snapshot.data);
+        } else if (snapshot.hasError) {
+          return _buildErrorWidget(snapshot.error);
         } else {
-          return _buildLoadingWidget();
+          return _buildNotificationWidget();
         }
       },
     );
   }
 
-  Widget _buildLoadingWidget() {
+  Widget _buildErrorWidget(String error) {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Error occured: $error",
+            style: Theme.of(context).textTheme.subtitle),
+      ],
+    ));
+  }
+
+  Widget _buildNotificationWidget() {
     return Center(
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,

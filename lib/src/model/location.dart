@@ -11,4 +11,8 @@ class Location {
         city = json["city"],
         state = json["state"],
         zip = json["zip"];
+
+  toJsonString() {
+    return '{ "street": "${street}", "city": "${city}", "state": "${state}", "zip": "${zip}"}';
+  }
 }

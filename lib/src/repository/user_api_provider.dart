@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:tinderapp/src/database/database_helper.dart';
+import 'package:tinderapp/src/model/user.dart';
 import 'package:tinderapp/src/model/user_response.dart';
 import 'package:tinderapp/src/utils/logging_interceptor.dart';
 import 'dart:convert';
@@ -7,6 +9,7 @@ class UserApiProvider {
   final String _endpoint = "https://randomuser.me/api/0.4/?randomapi";
   final JsonDecoder _decoder = new JsonDecoder();
   Dio _dio;
+
 
   UserApiProvider() {
     BaseOptions options =
