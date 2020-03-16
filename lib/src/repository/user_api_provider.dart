@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:tinderapp/src/database/database_helper.dart';
-import 'package:tinderapp/src/model/user.dart';
+import 'package:tinderapp/src/utils/globals.dart' as globals;
 import 'package:tinderapp/src/model/user_response.dart';
 import 'package:tinderapp/src/utils/logging_interceptor.dart';
 import 'dart:convert';
@@ -10,10 +9,9 @@ class UserApiProvider {
   final JsonDecoder _decoder = new JsonDecoder();
   Dio _dio;
 
-
   UserApiProvider() {
     BaseOptions options =
-    BaseOptions(receiveTimeout: 5000, connectTimeout: 5000);
+        BaseOptions(receiveTimeout: 5000, connectTimeout: 5000);
     _dio = Dio(options);
     _dio.interceptors.add(LoggingInterceptor());
   }
@@ -21,9 +19,13 @@ class UserApiProvider {
   Future<UserResponse> getUser() async {
     try {
       Response response = await _dio.get(_endpoint);
+      globals.error = false;
+      globals.loading = false;
       return UserResponse.fromJson(_decoder.convert(response.data));
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
+      globals.error = true;
+      globals.loading = true;
       return UserResponse.withError(_handleError(error));
     }
   }
@@ -41,14 +43,14 @@ class UserApiProvider {
           break;
         case DioErrorType.DEFAULT:
           errorDescription =
-          "Connection to API server failed due to internet connection";
+              "Connection to API server failed due to internet connection";
           break;
         case DioErrorType.RECEIVE_TIMEOUT:
           errorDescription = "Receive timeout in connection with API server";
           break;
         case DioErrorType.RESPONSE:
           errorDescription =
-          "Received invalid status code: ${dioError.response.statusCode}";
+              "Received invalid status code: ${dioError.response.statusCode}";
           break;
         case DioErrorType.SEND_TIMEOUT:
           errorDescription = "Send timeout in connection with API server";

@@ -10,7 +10,9 @@ import 'package:tinderapp/src/model/user.dart';
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper.internal();
   static Database _db;
+
   DatabaseHelper.internal();
+
   factory DatabaseHelper() => _instance;
 
   Future<Database> get db async {
@@ -61,6 +63,13 @@ class DatabaseHelper {
       }
     }
     return peoples;
+  }
+
+  Future<User> getByEmail(String email) async {
+    final dbClient = await db;
+    var res =
+        await dbClient.query("users", where: "email = ?", whereArgs: [email]);
+    return res.isNotEmpty ? User.fromMapDb(res.first) : null;
   }
 
   Future close() async {

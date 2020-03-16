@@ -8,20 +8,23 @@ class UserBloc {
   final BehaviorSubject<UserResponse> _subject =
       BehaviorSubject<UserResponse>();
 
-
   getUser() async {
     UserResponse response = await _repository.getUser();
     _subject.sink.add(response);
-//    var currentValue = await _subject.first;
-//    print(currentValue.results[0].phone);
   }
 
   addUser(User people) {
-    _repository.createUser(people).then((people) {
+    print("ADD");
+    _repository.getByEmail(people.email).then((user) {
+      if (user != people && user == null) {
+        _repository.createUser(people).then((people) {});
+      }
     }).catchError((e) {
       print(e);
     });
   }
+
+  getByEmail() {}
 
   setUser(data) {
     _subject.sink.add(data);

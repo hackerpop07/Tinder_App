@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tinderapp/src/model/user_response.dart';
 import 'package:tinderapp/src/bloc/user_bloc.dart';
-import 'package:swipedetector/swipedetector.dart';
 import '../model/user.dart';
+import 'package:tinderapp/src/utils/globals.dart' as globals;
 
 class UserWidget extends StatefulWidget {
   @override
@@ -29,11 +29,15 @@ class _UserWidgetState extends State<UserWidget>
     return StreamBuilder<UserResponse>(
       stream: userBloc.subject.stream,
       builder: (context, AsyncSnapshot<UserResponse> snapshot) {
+        print("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
         if (snapshot.hasData) {
           if (snapshot.data.error != null && snapshot.data.error.length > 0) {
             return _buildErrorWidget(snapshot.data.error);
           }
-          if (snapshot.hasData == loading) {
+          if (globals.loading) {
+            if(globals.error){
+              return _buildUserWidget(snapshot.data);
+            }
             return _buildLoadingWidget();
           }
           return _buildUserWidget(snapshot.data);
@@ -71,115 +75,104 @@ class _UserWidgetState extends State<UserWidget>
 
   Widget _buildUserWidget(UserResponse data) {
     User user = data.results[0];
-    return SwipeDetector(
-      child: Container(
+    return Container(
 //          padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-        constraints: BoxConstraints.expand(),
-        color: Color(0xfff9f9f9),
-        child: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    Container(
-                      height: 150,
-                      color: Colors.black,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 30, 15, 30),
-                      child: Column(
-                        children: <Widget>[
-                          Stack(
-                            fit: StackFit.loose,
-                            children: <Widget>[
-                              Container(
-                                width: double.infinity,
-                                height: 350,
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      width: double.infinity,
-                                      height: 150,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFFf9f9f9),
-                                        borderRadius: BorderRadius.circular(3),
-                                      ),
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                              bottom: BorderSide(
-                                                  color: Color(0xFFe2e2e2),
-                                                  width: 1)),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 200,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xffffffff),
-                                        borderRadius: BorderRadius.circular(3),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Column(
+      constraints: BoxConstraints.expand(),
+      color: Color(0xfff9f9f9),
+      child: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Stack(
+                children: <Widget>[
+                  Container(
+                    height: 150,
+                    color: Colors.black,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 30, 15, 30),
+                    child: Column(
+                      children: <Widget>[
+                        Stack(
+                          fit: StackFit.loose,
+                          children: <Widget>[
+                            Container(
+                              width: double.infinity,
+                              height: 350,
+                              child: Column(
                                 children: <Widget>[
-                                  Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          30, 20, 30, 30),
-                                      child: Container(
-                                        width: 172.0,
-                                        height: 172.0,
-                                        decoration: new BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                                width: 1,
-                                                color: Color(0xffc7c7c7))),
-                                        child: Container(
-                                            width: 170.0,
-                                            height: 170.0,
-                                            decoration: new BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                    width: 3,
-                                                    color: Colors.white),
-                                                image: new DecorationImage(
-                                                    fit: BoxFit.fill,
-                                                    image: new NetworkImage(
-                                                        user.picture)))),
+                                  Container(
+                                    width: double.infinity,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFFf9f9f9),
+                                      borderRadius: BorderRadius.circular(3),
+                                    ),
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color: Color(0xFFe2e2e2),
+                                                width: 1)),
                                       ),
                                     ),
                                   ),
-                                  tapBarView(user),
-                                  tapBar(),
+                                  Container(
+                                    height: 200,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xffffffff),
+                                      borderRadius: BorderRadius.circular(3),
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ],
-                          )
-                        ],
-                      ),
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        30, 20, 30, 30),
+                                    child: Container(
+                                      width: 172.0,
+                                      height: 172.0,
+                                      decoration: new BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: Color(0xffc7c7c7))),
+                                      child: Container(
+                                          width: 170.0,
+                                          height: 170.0,
+                                          decoration: new BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  width: 3,
+                                                  color: Colors.white),
+                                              image: new DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image: new NetworkImage(
+                                                      user.picture)))),
+                                    ),
+                                  ),
+                                ),
+                                tapBarView(user),
+                                tapBar(),
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                  ],
-                )
-              ],
-            ),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ),
-      onSwipeLeft: () {
-        userBloc.setUser(loading);
-        userBloc.getUser();
-      },
-      onSwipeRight: () {
-        userBloc.addUser(user);
-        userBloc.setUser(loading);
-        userBloc.getUser();
-      },
     );
   }
 
